@@ -1,0 +1,64 @@
+/**
+ * File:	clients/update.ycp
+ * Module:	System update
+ * Summary:	Main update client
+ * Authors:	Klaus Kaempf <kkaempf@suse.de>
+ *		Arvin Schnell <arvin@suse.de>
+ *		Lukas Ocilka <locilka@suse.cz>
+ *
+ * $Id: update.ycp 37767 2007-05-02 08:16:04Z locilka $
+ */
+
+{
+    textdomain "update";
+
+    import "Mode";
+    import "Update";
+    import "Wizard";
+    import "ProductControl";
+    import "Label";
+    import "Mode";
+    import "GetInstArgs";
+    import "CommandLine";
+
+    // Bugzilla #269910, CommanLine "support"
+    // argmap is only a map, CommandLine uses string parameters
+    if (size (GetInstArgs::argmap()) == 0 && size (WFM::Args()) > 0) {
+        Mode::SetUI ("commandline");
+        y2milestone ("Mode CommandLine not supported, exiting...");
+        // TRANSLATORS: error message - the module does not provide command line interface
+        CommandLine::Print(_("There is no user interface available for this module."));
+        return `auto;
+    }
+
+    // somewhere, DirInstall is imported that wants Pkg in the constructor
+    import "PackageLock";
+    // check whether having the packager for ourselves
+    if (! PackageLock::Check ())
+	return `abort;
+
+    // set normal mode and update
+    Mode::SetMode ("update");
+
+    Update::disallow_upgrade = true;
+    Update::onlyUpdateInstalled = true;
+    Update::deleteOldPackages = false;
+
+    ProductControl::custom_control_file =  "/etc/YaST2/system-update.xml";
+
+    Wizard::OpenNextBackStepsDialog();
+    Wizard::SetNextButton(`next, Label::AcceptButton());
+
+    if (!ProductControl::Init())
+    {
+        y2error("control file %1 not found", ProductControl::custom_control_file );
+    }
+    list<map> stage_mode = [$["stage": "normal",  "mode": Mode::mode() ]];
+    ProductControl::AddWizardSteps(stage_mode);
+
+    symbol ret = ProductControl::Run();
+
+    Wizard::CloseDialog ();
+
+    return `next;
+}

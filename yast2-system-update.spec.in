@@ -1,0 +1,31 @@
+@HEADER-COMMENT@
+
+@HEADER@
+Requires:	yast2
+BuildRequires:	perl-XML-Writer update-desktop-files yast2 yast2-devtools yast2-testsuite
+
+BuildArchitectures:	noarch
+
+Summary:	Configuration of system-update
+
+%description
+-
+
+@PREP@
+
+@BUILD@
+
+@INSTALL@
+
+@CLEAN@
+
+%files
+%defattr(-,root,root)
+%dir @yncludedir@/system-update
+@yncludedir@/system-update/*
+@clientdir@/system-update.ycp
+@clientdir@/system-update_*.ycp
+@moduledir@/SystemUpdate.*
+@moduledir@/SystemUpdate2.*
+@desktopdir@/system-update.desktop
+%doc @docdir@

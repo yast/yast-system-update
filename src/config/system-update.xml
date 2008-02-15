@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE productDefines SYSTEM "/usr/share/YaST2/control/control.dtd">
+<productDefines  xmlns="http://www.suse.com/1.0/yast2ns"
+    xmlns:config="http://www.suse.com/1.0/configns">
+
+<!--
+Work around for the text domain
+textdomain="update"
+-->
+
+    <textdomain>update</textdomain>
+    <software>
+	<upgrade_repo>nfs://tullamore.suse.cz/local/inst/os11</upgrade_repo>
+    </software>
+
+    <proposals config:type="list">
+        <proposal>
+            <label>Update Settings</label>
+            <mode>update</mode>
+            <name>update</name>
+            <stage>normal</stage>
+            <proposal_modules config:type="list">
+                <proposal_module>update</proposal_module>
+                <proposal_module>packages</proposal_module>
+                <proposal_module>backup</proposal_module>
+                <proposal_module>language</proposal_module>
+            </proposal_modules>
+        </proposal>
+    </proposals>
+
+    <workflows config:type="list">
+        <workflow>
+	    <label>Update</label>
+            <defaults>
+                <archs>all</archs>
+            </defaults>
+            <stage>normal</stage>
+            <mode>update</mode>
+            <modules  config:type="list">
+                <module>
+	            <label>Repository Selection</label>
+                    <name>inst_system_update_repo_select</name>
+                </module>
+                <module>
+                    <name>inst_system_update_prepare_system</name>
+	            <label>Perform Update</label>
+                </module>
+            </modules>
+        </workflow>
+    </workflows>
+</productDefines>

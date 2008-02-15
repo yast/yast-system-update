@@ -1,0 +1,64 @@
+{
+    import "GetInstArgs";
+    import "SystemUpdate";
+    import "PackageCallbacksInit";
+    import "Popup";
+    import "Label";
+    import "Wizard";
+
+    textdomain "installation";
+
+    map out = (map)SCR::Execute (.target.bash_output, "echo $UPDATE_TMP_DIR");
+    SystemUpdate::inst_sys_dir = out["stdout"]:"";
+    list<string> components = splitstring (SystemUpdate::inst_sys_dir, "\n");
+    SystemUpdate::inst_sys_dir = components[0]:"";
+    y2milestone ("Using temporary dir %1", SystemUpdate::inst_sys_dir);
+
+    PackageCallbacksInit::InitPackageCallbacks ();
+
+    boolean restore = Pkg::SourceRestore();
+    if( ! restore )
+    {
+        boolean cont = Popup::AnyQuestionRichText(
+            Label::ErrorMsg(),
+            // Error popup
+            _("<p>There were errors while restoring the repository configuration.</p>\n") + "<p>" + Pkg::LastError() + "</p>",
+            50, 15,
+            Label::ContinueButton(), Label::CancelButton(), `focus_no
+        );
+
+        // really continue?
+        if (!cont) {
+            return `abort;
+        }
+    }
+
+    any sourceStatesIn = Pkg::SourceEditGet();
+
+    list items = maplist (map<string,any> s, Pkg::SourceEditGet(), {
+	return `item (`id (s["SrcId"]:-1), s["name"]:"Unnamed Source");
+    });
+    term contents = `SelectionBox (`id (`repos), _("Available Repositories"), items);
+    Wizard::SetContents ("Repositories", contents, "", true, true);
+
+    any ret = nil;
+    while (ret == nil)
+    {
+	ret = UI::UserInput ();
+	if (ret == `next)
+	{
+	    integer item = (integer)UI::QueryWidget (`id (`repos), `Value);
+	    if (item == nil)
+	    {
+		ret = nil;
+		Popup::Message ("Select a repository to upgrade from");
+	    }
+	    else
+	    {
+		SystemUpdate::repo = item;
+	    }
+	}
+    }
+
+    return (symbol)ret;
+}
