@@ -22,3 +22,4 @@ Exec=/usr/lib/YaST2/bin/system-update.sh
 Name=SystemUpdate
 GenericName=system-update
 X-KDE-SubstituteUID=true
+StartupNotify=true
