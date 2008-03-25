@@ -6,7 +6,7 @@
     import "Label";
     import "Wizard";
 
-    textdomain "installation";
+    textdomain "system-update";
 
     map out = (map)SCR::Execute (.target.bash_output, "echo $UPDATE_TMP_DIR");
     SystemUpdate::inst_sys_dir = out["stdout"]:"";

@@ -6,7 +6,7 @@
     import "Report";
     import "Installation";
 
-    textdomain "installation";
+    textdomain "system-update";
 
     symbol ret = `next;
     if (GetInstArgs::going_back())

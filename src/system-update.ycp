@@ -10,7 +10,7 @@
  */
 
 {
-    textdomain "update";
+    textdomain "system-update";
 
     import "Mode";
     import "Update";
