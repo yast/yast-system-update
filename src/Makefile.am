@@ -9,9 +9,6 @@ client_DATA =			\
 	inst_system_update_prepare_system.ycp	\
 	inst_system_update_repo_select.ycp
 
-ynclude_DATA =			\
-	helps.ycp
-
 module_DATA =			\
 	SystemUpdate.ycp
 

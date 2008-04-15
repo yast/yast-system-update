@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Apr 15 15:33:36 CEST 2008 - jsrain@suse.cz
+
+- removed unused helps.ycp (bnc #375298)
+
+-------------------------------------------------------------------
 Mon Mar 17 12:43:32 CET 2008 - jsrain@suse.cz
 
 - added 'StartupNotify=true' to the desktop file (bnc #304964)
