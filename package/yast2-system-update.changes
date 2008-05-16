@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May 16 16:40:22 CEST 2008 - jsrain@suse.cz
+
+- added categories Settings and System into desktop file
+  (bnc #382778)
+
+-------------------------------------------------------------------
 Tue Apr 15 15:33:36 CEST 2008 - jsrain@suse.cz
 
 - removed unused helps.ycp (bnc #375298)
